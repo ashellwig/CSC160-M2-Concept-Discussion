@@ -142,7 +142,9 @@
           based on a single condition (or a compound expression) while assigning
           a statement to execute if the conditions are not met, we use a
           \hl{two-way} selection structure, ``\texttt{if...else...}''
-          \CiteSection{malik_2015}{4-1e}.
+          \CiteSection{malik_2015}{4-1e}. When we are required to incorporate
+          multiple selections, we use a \textit{nested}
+          ``\texttt{if...else...}'' structure \CiteSection{malik_2015}{4-1l}.
 
         % ONE-WAY SELECTION
         \begin{examp*}[One-Way Selection]
@@ -182,6 +184,27 @@ if (user.isAuthenticated == true) {
 }
         \end{lstlisting}
 
+        % Multi-WAY SELECTION
+        \newpage
+        \begin{examp*}[Multi-Way Selection]
+          Suppose a piece of software wanted to ensure users were authenticated
+            in order to visit a certain route on the server, and \emph{if the
+            authentication check fails}, send them to the ``home'' route. Well,
+            This could be checked by writing an ``\texttt{if...else}'' statement
+            as provided in Listing \ref{if:multiwayselection}.
+        \end{examp*}
+
+        \begin{lstlisting}[%
+          language=c++,
+          caption={Example: Multi-Way Selection},
+          label={if:multiwayselection}
+        ]
+if (user.isAuthenticated == true) {
+  router.push('/auth');
+} else {
+  router.push('/home')
+}
+        \end{lstlisting}
 
 
 
@@ -204,7 +227,6 @@ if (user.isAuthenticated == true) {
 
   % Bibliography
   \newpage
-  \nocite{malik_2015}
   \printbibliography[
     heading=bibintoc,
     title={Bibliography}
