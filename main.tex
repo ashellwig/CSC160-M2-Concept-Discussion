@@ -76,7 +76,26 @@
     linkcolor = blue,
     citecolor = blue
   }
+
   % Syntax-Highlight for Code Snippets
+  %% UTF-8 Support
+  \lstset{literate=%
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+    {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+    {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+    {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+    {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+    {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+    {Ã}{{\~A}}1 {ã}{{\~a}}1 {Õ}{{\~O}}1 {õ}{{\~o}}1
+    {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+    {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+    {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+    {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+    {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
+  }
+  %% Appearance
   \lstset{
     breaklines=true,
     captionpos=b,
@@ -100,6 +119,8 @@
   }
   \setlength{\headheight}{15pt}
 
+  \lstMakeShortInline[language=c++,columns=fixed]|
+
   \newenvironment{ldefinitions}
     {\left.\begin{aligned}}
     {\end{aligned}\right\rbrace}
@@ -115,7 +136,7 @@
   \newpage
 
 
-  \part{Initial Post}
+  \chapter{Initial Post}
 
     \section{Research Prompt}
       \begin{mdframed}[backgroundcolor=green!20]
@@ -185,44 +206,93 @@ if (user.isAuthenticated == true) {
         \end{lstlisting}
 
         % Multi-WAY SELECTION
-        \newpage
         \begin{examp*}[Multi-Way Selection]
-          Suppose a piece of software wanted to ensure users were authenticated
-            in order to visit a certain route on the server, and \emph{if the
-            authentication check fails}, send them to the ``home'' route. Well,
-            This could be checked by writing an ``\texttt{if...else}'' statement
-            as provided in Listing \ref{if:multiwayselection}.
+          Suppose a game wanted to dictate what strength level to give its users
+            based on his or her level in the game. If their level is 100, the
+            user gets $\infty$ assigned to their strength. If the user is
+            between levels $50$ and $99$, their strength is set to $1000$. If
+            the user is between level $25$ and $49$, their strength is set to
+            $500$. For levels $<25$, we will assign $250$ as their strength
+            value. To assign the correct strength value to the user, we can use
+            the \textit{nested} \texttt{if...else...} statement as described in
+            Listing \ref{if:multiwayselection}.
         \end{examp*}
 
         \begin{lstlisting}[%
-          language=c++,
-          caption={Example: Multi-Way Selection},
-          label={if:multiwayselection}
+          language=c++,%
+          caption={Example: Multi-Way Selection},%
+          label={if:multiwayselection},%
+          mathescape=true%
         ]
-if (user.isAuthenticated == true) {
-  router.push('/auth');
-} else {
-  router.push('/home')
+// Note: I am aware that $\infty$ is not a valid value.
+// This is just for illustration purposes.
+if (user.level >= 100) {
+  user.strength = $\infty$;
+  else {
+    if (50 <= user.level <= 99) {
+      user.strength = 1000;
+    } else {
+      if (25 <= user.level <= 49) {
+        user.strength = 500;
+      } else {
+        if (user.level <= 24) {
+          user.strength = 250;
+        }
+      }
+    }
+  }
+}
+        \end{lstlisting}
+
+        The deciding factor between using a nested \texttt{if...else...}
+          statement versus a series of \texttt{if} statements lies in that when
+          using the series of statements, more than one statement could execute
+          if multiple conditions are true. Using the nested
+          \texttt{if...else...} statement allows us to prevent that from
+          happening by only executing the first statement which matches the
+          given constraints.
+
+      %% SWITCH STRUCTURES
+      \newpage
+      \subsection{\texttt{switch} Structures}
+        Suppose we have \textbf{a lot} of alternatives for selection in our
+          program. Nested \texttt{if...else...} structures tend to get a bit
+          heavy when using a lot of selection options, which is where C++`s
+          |switch| statement comes in. First the expression is evaluated and
+          that is used to select amongst the alternatives given in the
+          statements following the reserved word, ``|case|''. See the below
+          example and Listing \ref{switch:syntax} for basic syntax.
+
+        \begin{examp*}[Switch Syntax]
+          Suppose you wanted to alert users as to which group they belong to,
+            \texttt{admin}, \texttt{user}, or \texttt{guest}. To do this in C++,
+            we would use the basic snippet of a switch structure as seen in
+            Listing \ref{switch:syntax}.
+        \end{examp*}
+
+        \begin{lstlisting}[%
+          language=c++,%
+          caption={Example: Basic Switch Structure Syntax},%
+          label={switch:syntax},%
+          mathescape=true%
+        ]
+switch (user.group) {
+  case "admin":
+    cout << "You are in the admin group." << endl;
+    break;
+  case "user":
+    cout << "You are in the user group." << endl;
+    break;
+  case "guest":
+    cout << "You are in the guest group." << endl;
+    break;
 }
         \end{lstlisting}
 
 
 
-  \newpage
-  \part{Responses}
-
-    % \section{Response 1}
-    %   \begin{mdframed}[backgroundcolor=green!20]
-    %     Reply to \textbf{} (\textit{Post ID:})
-    %   \end{mdframed}
-    %   Placeholder
-
-
-    % \section{Response 2}
-    %   \begin{mdframed}[backgroundcolor=green!20]
-    %     Reply to \textbf{} (\textit{Post ID:})
-    %   \end{mdframed}
-    %   Placeholder
+  % Replies to Other`s Responses
+  % \input{tex/replies.tex}
 
 
   % Bibliography
