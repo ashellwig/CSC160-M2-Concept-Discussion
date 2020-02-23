@@ -1,9 +1,8 @@
-\documentclass[12pt,parskip=half]{scrreprt}
-  \usepackage[USenglish]{babel}
+\documentclass[12pt]{report}
+  \usepackage[english]{babel}
   \usepackage[utf8]{inputenc}
-  \usepackage{scrhack}
-  \usepackage{hyperref}
   \usepackage[dvipsnames]{xcolor}
+  \usepackage{hyperref}
   \usepackage{listings}
   \usepackage{parcolumns}
   \usepackage{algorithm}
@@ -23,13 +22,15 @@
   \usepackage[toc]{appendix}
   \usepackage[
     backend=biber,%
-    style=ieee%
+    style=apa%
   ]{biblatex}
+
+  \colorlet{light-gray}{gray!10}
 
   % Bibliography Setup
   \addbibresource{main.bib}
   \newcommand{\CiteSection}[2]{%
-    (\autocite{#1}, ~\S {#1})
+    \parencite[~\S {#2}]{#1}
   }
 
   % Theorem Environments
@@ -37,6 +38,8 @@
   \newtheorem*{defn*}{Definition}
   \theoremstyle{plain}
   \newtheorem*{equ*}{Equation}
+  \theoremstyle{plain}
+  \newtheorem*{examp*}{Example}
 
   % Definitions for Algorithmic Environments
   \algdef{SE}[VARIABLES]{GVariables}{EndGVariables}
@@ -64,7 +67,6 @@
   }
   \makeatother
 
-
   % Image Directory
   \graphicspath{ {screenshots/} }
   % Hyperlink Setup
@@ -76,16 +78,16 @@
   }
   % Syntax-Highlight for Code Snippets
   \lstset{
-    backgroundcolor=\color{white},
     breaklines=true,
     captionpos=b,
     frame=tb,
     tabsize=4,
-    % numbers=left,
+    numbers=left,
     showstringspaces=false,
     commentstyle=\color{Red},
-    keywordstyle=\color{Aquamarine},
-    stringstyle=\color{ForestGreen}
+    keywordstyle=\color{Violet},
+    stringstyle=\color{OliveGreen},
+    backgroundcolor=\color{light-gray}
   }
 
   % Page and Text Layout
@@ -129,7 +131,58 @@
       \end{mdframed}
 
     \section{Response}
-      Placeholder.
+      There are numerous selection structures available for use in modern C++,
+        and for the most part they are interchangable. There are certain
+        situations in which certain structures will perform better than others.
+
+      \subsection{\texttt{if} Statements}
+        If one wishes to select which statement to execute based on one simple
+          condition, this is called a \hl{one-way} selection
+          \CiteSection{malik_2015}{4-1d}. When attempting to select a statement
+          based on a single condition (or a compound expression) while assigning
+          a statement to execute if the conditions are not met, we use a
+          \hl{two-way} selection structure, ``\texttt{if...else...}''
+          \CiteSection{malik_2015}{4-1e}.
+
+        % ONE-WAY SELECTION
+        \begin{examp*}[One-Way Selection]
+          Suppose a piece of software wanted to ensure users were authenticated
+            in order to visit a certain route on the server. This could be
+            checked by writing an ``\texttt{if}'' statement as provided in
+            Listing \ref{if:onewayselection}.
+        \end{examp*}
+
+        \begin{lstlisting}[%
+          language=c++,
+          caption={Example: One Way Selection},
+          label={if:onewayselection}
+        ]
+if (user.isAuthenticated == true) // Expression (Decision Maker)
+  router.push('/auth');           // (Action) Statement
+        \end{lstlisting}
+
+        % TWO-WAY SELECTION
+        \begin{examp*}[Two-Way Selection]
+          Suppose a piece of software wanted to ensure users were authenticated
+            in order to visit a certain route on the server, and \emph{if the
+            authentication check fails}, send them to the ``home'' route. Well,
+            This could be checked by writing an ``\texttt{if...else}'' statement
+            as provided in Listing \ref{if:twowayselection}.
+        \end{examp*}
+
+        \begin{lstlisting}[%
+          language=c++,
+          caption={Example: Two Way Selection},
+          label={if:twowayselection}
+        ]
+if (user.isAuthenticated == true) {
+  router.push('/auth');
+} else {
+  router.push('/home')
+}
+        \end{lstlisting}
+
+
 
 
   \newpage

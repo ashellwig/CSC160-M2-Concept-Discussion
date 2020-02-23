@@ -8,6 +8,7 @@
 *_temp.tex
 *.aux
 *.bbl
+*.bcf
 *.blg
 *.idx
 *.ind
